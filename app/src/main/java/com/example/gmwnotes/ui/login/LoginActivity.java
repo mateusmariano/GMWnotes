@@ -5,6 +5,7 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gmwnotes.DashboardUser;
 import com.example.gmwnotes.R;
 import com.example.gmwnotes.ui.login.LoginViewModel;
 import com.example.gmwnotes.ui.login.LoginViewModelFactory;
@@ -69,14 +71,16 @@ public class LoginActivity extends AppCompatActivity {
                     showLoginFailed(loginResult.getError());
                 }
                 if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                   // updateUiWithUser(loginResult.getSuccess());
+                    openDashboard();
                 }
                 setResult(Activity.RESULT_OK);
 
                 //Complete and destroy login activity once successful
-                finish();
+              //  finish();
             }
         });
+
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -118,7 +122,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void openDashboard(){
+        String welcome = "Bem vindo malandro!" ;
+        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, DashboardUser.class);
+        startActivity(intent);
+    }
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();
         // TODO : initiate successful logged in experience
