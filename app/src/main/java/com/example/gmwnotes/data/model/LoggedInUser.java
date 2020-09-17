@@ -8,11 +8,13 @@ public class LoggedInUser {
     private String userId;
     private String displayName;
     private String password;
+    private Double notadecorte;
 
-    public LoggedInUser(String userId, String displayName, String password) {
+    public LoggedInUser(String userId, String displayName, String password, Double notadecorte) {
         this.userId = userId;
         this.displayName = displayName;
         this.password = password;
+        this.notadecorte = notadecorte;
     }
 
     public String getUserId() {
@@ -24,4 +26,6 @@ public class LoggedInUser {
     }
 
     public String getPassword() {return password; }
+
+    public Double getNotaDeCorte() {return notadecorte; }
 }
