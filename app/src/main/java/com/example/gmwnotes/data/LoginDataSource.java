@@ -8,10 +8,16 @@ import java.io.IOException;
  * Class that handles authentication w/ login credentials and retrieves user information.
  */
 public class LoginDataSource {
-
+    LoggedInUser user = new LoggedInUser("jfreire", "jfreire", "admin");
     public Result<LoggedInUser> login(String username, String password) {
+        if(user.getUserId().equals(username) && user.getPassword().equals(password)){
+            return new Result.Success<>(user);
+        }
+        else{
+            return new Result.Error(new IOException("Error logging in"));
+        }
 
-        try {
+        /**try {
             // TODO: handle loggedInUser authentication
             LoggedInUser fakeUser =
                     new LoggedInUser(
@@ -20,7 +26,7 @@ public class LoginDataSource {
             return new Result.Success<>(fakeUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in", e));
-        }
+        }*/
     }
 
     public void logout() {
