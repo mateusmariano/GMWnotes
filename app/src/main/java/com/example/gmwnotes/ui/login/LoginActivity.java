@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.gmwnotes.Cadastro;
 import com.example.gmwnotes.DashboardUser;
 import com.example.gmwnotes.R;
 import com.example.gmwnotes.ui.login.LoginViewModel;
@@ -31,11 +32,20 @@ import com.example.gmwnotes.ui.login.LoginViewModelFactory;
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private Button button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openCadastro();
+            }
+        });
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
@@ -122,6 +132,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
     public void openDashboard(){
         String welcome = "Bem vindo malandro!" ;
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
@@ -136,5 +148,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void showLoginFailed(@StringRes Integer errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    public void openCadastro(){
+        Intent intent = new Intent(this, Cadastro.class);
+        startActivity(intent);
     }
 }
