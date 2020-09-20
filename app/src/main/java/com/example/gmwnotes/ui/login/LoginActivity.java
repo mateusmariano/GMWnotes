@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.example.gmwnotes.Cadastro;
 import com.example.gmwnotes.DashboardUser;
 import com.example.gmwnotes.R;
+import com.example.gmwnotes.ui.login.LoginViewModel;
+import com.example.gmwnotes.ui.login.LoginViewModelFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
