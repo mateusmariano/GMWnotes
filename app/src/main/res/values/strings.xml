@@ -9,4 +9,6 @@
     <string name="invalid_username">Usuario invalido</string>
     <string name="invalid_password">A senha deve ter >4 caracteres</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>

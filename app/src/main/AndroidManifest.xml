@@ -15,7 +15,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".DashboardUser"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/app_name"

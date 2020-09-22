@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item
+        android:id="@+id/calc"
+        android:icon="@drawable/ic_baseline_grid_on_24"
+        android:title="Calcular Media" />
+    <item
+        android:id="@+id/dashboard"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Dashboard" />
 </menu>
