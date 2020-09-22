@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CalcMedia extends AppCompatActivity {
+public class CalcMedia extends AppCompatActivity{
 
     final double corte = 7;
     double av1Value = 0.0;
