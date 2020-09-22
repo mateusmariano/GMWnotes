@@ -69,7 +69,7 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
         if(menuItem.getItemId() == R.id.calc){
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_fragment, new DashFragment());
+            fragmentTransaction.replace(R.id.container_fragment, new CalcMedia());
             fragmentTransaction.commit();
 
         }

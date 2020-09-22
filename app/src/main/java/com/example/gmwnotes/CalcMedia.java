@@ -1,16 +1,21 @@
 package com.example.gmwnotes;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CalcMedia extends AppCompatActivity{
+public class CalcMedia extends Fragment {
 
     final double corte = 7;
     double av1Value = 0.0;
@@ -18,16 +23,21 @@ public class CalcMedia extends AppCompatActivity{
     double av3Value = 0.0;
     double finalResultado;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calc_media);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_calc_media, container, false);
+        return view;
+    }
 
-        final EditText av1text = findViewById(R.id.av1textfield);
-        final EditText av2text = findViewById(R.id.av2textfield);
-        final EditText av3text = findViewById(R.id.av3TextField);
-        final TextView faltantetext = findViewById(R.id.faltanteText);
-        final Button calcbutton = findViewById(R.id.calcButton);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        final EditText av1text = view.findViewById(R.id.av1textfield);
+        final EditText av2text = view.findViewById(R.id.av2textfield);
+        final EditText av3text = view.findViewById(R.id.av3TextField);
+        final TextView faltantetext = view.findViewById(R.id.faltanteText);
+        final Button calcbutton = view.findViewById(R.id.calcButton);
         calcbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,6 +64,8 @@ public class CalcMedia extends AppCompatActivity{
             }
         });
     }
+
+
 
     private double Calcular(double av1Value, double av2Value, double av3Value, TextView faltantetext, TextView av3text) {
         double resultado;
