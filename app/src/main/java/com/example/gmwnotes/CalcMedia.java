@@ -100,7 +100,7 @@ public class CalcMedia extends Fragment {
     }
 
     private boolean checkPassou(double resultado) {
-        if (resultado > corte) {
+        if (resultado >= corte) {
             return true;
         } else {
             return false;
