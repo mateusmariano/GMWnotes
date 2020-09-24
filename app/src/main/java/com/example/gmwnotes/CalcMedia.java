@@ -37,6 +37,7 @@ public class CalcMedia extends Fragment {
         final EditText av2text = view.findViewById(R.id.av2textfield);
         final EditText av3text = view.findViewById(R.id.av3TextField);
         final TextView faltantetext = view.findViewById(R.id.faltanteText);
+        final TextView mediatext = view.findViewById(R.id.mediatxt);
         final Button calcbutton = view.findViewById(R.id.calcButton);
         calcbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +93,7 @@ public class CalcMedia extends Fragment {
     }
 
     private boolean checkAv3(TextView av3text) {
-        if (TextUtils.isEmpty(av3text.getText().toString())) {
+        if (TextUtils.isEmpty(av3text.getText().toString()) || av3text.getText() == "0" || av3text.getText() == "0.0") {
             return false;
         } else {
             return true;
@@ -100,7 +101,7 @@ public class CalcMedia extends Fragment {
     }
 
     private boolean checkPassou(double resultado) {
-        if (resultado > corte) {
+        if (resultado >= corte) {
             return true;
         } else {
             return false;
