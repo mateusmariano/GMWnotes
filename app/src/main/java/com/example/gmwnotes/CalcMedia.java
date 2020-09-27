@@ -22,6 +22,7 @@ public class CalcMedia extends Fragment {
     double av2Value = 0.0;
     double av3Value = 0.0;
     double finalResultado;
+    double media = 0.0;
 
     @Nullable
     @Override
@@ -52,11 +53,21 @@ public class CalcMedia extends Fragment {
                         av2Value = Double.parseDouble(av2text.getText().toString());
                         av3Value = Double.parseDouble(av3text.getText().toString());
                     }
+                    faltantetext.setText(" ");
+                    mediatext.setText(" ");
                     finalResultado = Calcular(av1Value, av2Value, av3Value, faltantetext, av3text);
                     if (finalResultado == 0) {
                         faltantetext.setText("Você já passou!");
                     } else {
-                        faltantetext.setText(Double.toString(finalResultado));
+                        if(checkAv3(av3text)){
+                            faltantetext.setText("Você não passou por "+Double.toString(finalResultado)+" pontos");
+                            mediatext.setText("Sua media final foi "+Double.toString(media));
+                        }
+                        else {
+                            faltantetext.setText("Você precisa de "+ Double.toString(finalResultado)+" pontos");
+                            mediatext.setText("Sua media por enquanto é "+Double.toString(media));
+                        }
+
                     }
                 }else{
                     faltantetext.setText("Adicione os valores nos campos");
@@ -83,6 +94,7 @@ public class CalcMedia extends Fragment {
         } else {
             resultado = (av1Value + av2Value + av3Value) / 3;
         }
+        media = resultado;
         faltante = (corte * 2) - maiorNota;
         passou = checkPassou(resultado);
         if (passou) {
