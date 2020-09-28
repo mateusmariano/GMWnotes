@@ -23,6 +23,7 @@ public class CalcMedia extends Fragment {
     double av3Value = 0.0;
     double finalResultado;
     double media = 0.0;
+    int maiorIndex;
 
     @Nullable
     @Override
@@ -83,6 +84,7 @@ public class CalcMedia extends Fragment {
         double resultado;
         double faltante;
         double maiorNota;
+        double segundaMaiorNota;
         boolean temAv3 = false;
         boolean passou = false;
 
@@ -92,7 +94,8 @@ public class CalcMedia extends Fragment {
         if (!temAv3) {
             resultado = (av1Value + av2Value) / 2;
         } else {
-            resultado = (av1Value + av2Value + av3Value) / 3;
+            segundaMaiorNota = getSegMaiorNota(av1Value,av2Value,av3Value);
+            resultado = (maiorNota + segundaMaiorNota) / 2;
         }
         media = resultado;
         faltante = (corte * 2) - maiorNota;
@@ -122,11 +125,15 @@ public class CalcMedia extends Fragment {
 
     private double getMaiorNota(boolean _temAv3, double av1Value, double av2Value, double av3Value) {
         if (_temAv3) {
-            if (av1Value > av2Value && av1Value > av3Value) {
+
+            if (av1Value > av2Value && av1Value > av3Value || av1Value == av2Value) {
+                maiorIndex = 0;
                 return av1Value;
             } else if (av2Value > av1Value && av2Value > av3Value) {
+                maiorIndex = 1;
                 return av2Value;
             } else {
+                maiorIndex = 2;
                 return av3Value;
             }
         } else {
@@ -136,5 +143,50 @@ public class CalcMedia extends Fragment {
                 return av2Value;
             }
         }
+    }
+    private double getSegMaiorNota(double av1, double av2, double av3){
+        double seg = 0.0;
+        switch (maiorIndex){
+            case 0:
+                if(av1 == av2){
+                    seg = av2;
+                }else if(av1 == av3){
+                    seg = av3;
+                }else {
+                    if (av2 > av3) {
+                        seg = av2;
+                    } else {
+                        seg = av3;
+                    }
+                }
+                break;
+            case 1:
+                if(av2 == av1){
+                    seg = av1;
+                }else if(av2 == av3){
+                    seg = av3;
+                }else {
+                    if (av1 > av3) {
+                        seg = av1;
+                    } else {
+                        seg = av3;
+                    }
+                }
+                break;
+            case 2:
+                if(av3 == av1){
+                    seg = av1;
+                }else if(av3 == av2){
+                    seg = av2;
+                }else {
+                    if (av1 > av2) {
+                        seg = av1;
+                    } else {
+                        seg = av2;
+                    }
+                }
+                break;
+        }
+        return seg;
     }
 }
