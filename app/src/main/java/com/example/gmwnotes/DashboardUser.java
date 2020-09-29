@@ -3,6 +3,7 @@ package com.example.gmwnotes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
@@ -60,6 +61,7 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        drawerLayout.closeDrawer(GravityCompat.START);
        if(menuItem.getItemId() == R.id.dashboard){
            fragmentManager = getSupportFragmentManager();
            fragmentTransaction = fragmentManager.beginTransaction();
@@ -76,4 +78,5 @@ public class DashboardUser extends AppCompatActivity implements NavigationView.O
 
         return true;
     }
+
 }
