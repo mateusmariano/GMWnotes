@@ -42,8 +42,8 @@ public class CalcMedia extends Fragment {
         final TextView mediatext = view.findViewById(R.id.mediatxt);
         final Button calcbutton = view.findViewById(R.id.calcButton);
         calcbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                @Override
+                public void onClick(View view) {
                 faltantetext.setText("");
                 if (!TextUtils.isEmpty(av1text.getText().toString()) && !TextUtils.isEmpty(av2text.getText().toString())) {
                     if (TextUtils.isEmpty(av3text.getText().toString())) {
