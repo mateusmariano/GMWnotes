@@ -34,6 +34,7 @@ public class Cadastro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
+        Button cadbutton = findViewById(R.id.cadbutton);
 
         username = findViewById(R.id.userField);
         pass = findViewById(R.id.passField);
@@ -41,6 +42,12 @@ public class Cadastro extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
+        cadbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cadastrar();
+            }
+        });
     }
 
 

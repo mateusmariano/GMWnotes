@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1078992090619",
+    "firebase_url": "https://gmwnotes.firebaseio.com",
+    "project_id": "gmwnotes",
+    "storage_bucket": "gmwnotes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1078992090619:android:7e836649d3024af671475e",
+        "android_client_info": {
+          "package_name": "com.example.gmwnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1078992090619-ld2uvnc9np92lf6kn3ea24beu0g1tnb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gmwnotes",
+            "certificate_hash": "27ecf3d176193440e3b1ab8372c19538b561c754"
+          }
+        },
+        {
+          "client_id": "1078992090619-8r6l2ag3t5oc4i9ino8oe2k3jf57b4qr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnFOhNfPcbMVwnAeK8PJb3MREw5ibqH4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1078992090619-8r6l2ag3t5oc4i9ino8oe2k3jf57b4qr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
