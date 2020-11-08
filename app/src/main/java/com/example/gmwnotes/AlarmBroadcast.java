@@ -30,9 +30,8 @@ public class AlarmBroadcast extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "notify_001");
 
 
-        PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
-
-
+        mBuilder.build().flags = Notification.FLAG_NO_CLEAR | Notification.PRIORITY_HIGH;
+        mBuilder.setContentIntent(pendingIntent);
 
         mBuilder.setContentTitle("Sua aula vai começar!");
         mBuilder.setContentText("Não se atrase, sua aula vai começar daqui a pouco");
@@ -41,6 +40,7 @@ public class AlarmBroadcast extends BroadcastReceiver {
         mBuilder.setAutoCancel(true);
         mBuilder.setPriority(Notification.PRIORITY_HIGH);
         mBuilder.setOnlyAlertOnce(true);
+        mBuilder.setOngoing(true);
         mBuilder.setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

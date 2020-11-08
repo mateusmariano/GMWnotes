@@ -7,6 +7,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class DashFragment extends Fragment implements View.OnClickListener {
     Button btnHorario, btnData, btnSave;
     String quandoNotificar;
     DatabaseClass databaseClass;
+    Calendar calendarToSave;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,6 +62,8 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         btnData.setOnClickListener(this);
         btnHorario.setOnClickListener(this);
         btnSave.setOnClickListener(this);
+        databaseClass = DatabaseClass.getDatabase(this.getContext());
+        calendarToSave = Calendar.getInstance();
     }
 
     @Override
@@ -94,9 +98,11 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         entityClass.setEventdate(data);
         entityClass.setEventname(name);
         entityClass.setEventtime(hora);
-        databaseClass.EventDao().insertAll(entityClass);
-        setAlarm(name, data, hora);
 
+        databaseClass.EventDao().insertAll(entityClass);
+
+       // setAlarm(name, data, hora);
+        setAlarm(calendarToSave,name,data,hora);
         //finish();
     }
     private void selectHorario(){
@@ -108,6 +114,8 @@ public class DashFragment extends Fragment implements View.OnClickListener {
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 quandoNotificar = i+":"+i1;
                 btnHorario.setText(formatTime(i,i1));
+                calendarToSave.set(Calendar.HOUR_OF_DAY,i);
+                calendarToSave.set(Calendar.MINUTE,i1);
             }
         }, hora,minuto, false);
         timePickerDialog.show();
@@ -121,6 +129,10 @@ public class DashFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onDateSet(DatePicker datePicker, int ano, int mes, int dia) {
                 btnData.setText(dia+"-"+mes+"-"+ano);
+                calendarToSave.set(Calendar.DAY_OF_MONTH, dia);
+                calendarToSave.set(Calendar.MONTH, mes);
+                calendarToSave.set(Calendar.YEAR, ano);
+
             }
         },ano, mes, dia);
         datePickerDialog.show();
@@ -153,9 +165,10 @@ public class DashFragment extends Fragment implements View.OnClickListener {
 
         return time;
     }
-    private void setAlarm(String text, String date, String time){
+
+    private void setAlarma(String text, String date, String time){
         AlarmManager am = (AlarmManager)this.getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlarmBroadcast.class);
+        Intent intent = new Intent(this.getContext(), AlarmBroadcast.class);
         intent.putExtra("event", text);
         intent.putExtra("horario", date);
         intent.putExtra("data", time);
@@ -171,6 +184,25 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void setAlarm(Calendar calendar, String text, String date, String time){
+        Intent myIntent = new Intent(this.getContext() , AlarmBroadcast.class);
+        myIntent.putExtra("event", text);
+        myIntent.putExtra("time", date);
+        myIntent.putExtra("date", time);
+        AlarmManager am = (AlarmManager)this.getContext().getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getService(this.getContext(), 0, myIntent, 0);
+
+        Calendar calendarTorRemember = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
+        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR));
+        calendar.set(Calendar.AM_PM, Calendar.AM);
+        calendar.add(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+
+        am.setRepeating(AlarmManager.RTC_WAKEUP, calendarTorRemember.getTimeInMillis(), 1000*60*60*24 , pendingIntent);
 
     }
 
