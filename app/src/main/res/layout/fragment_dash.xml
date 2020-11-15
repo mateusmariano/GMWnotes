@@ -7,68 +7,18 @@
     tools:context=".DashFragment">
 
     <Button
-        android:id="@+id/lembreteButton"
-        android:layout_width="410dp"
-        android:layout_height="82dp"
-        android:layout_marginBottom="220dp"
-        android:background="#951A1A"
-        android:text="Dev. Aplicações Móveis/ Terça/ 21h"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37" />
-
-    <Button
-        android:id="@+id/notButton"
-        android:layout_width="105dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="278dp"
-        android:layout_marginLeft="278dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
-        android:layout_marginBottom="376dp"
-        android:background="#F32A2A"
-        android:text="Notificar"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button2"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="44dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="27dp"
-        android:layout_marginLeft="27dp"
-        android:layout_marginEnd="207dp"
-        android:layout_marginRight="207dp"
-        android:background="#F32A2A"
-        android:text="+"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/notButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lembreteButton" />
-
-    <Button
         android:id="@+id/horariobtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="161dp"
         android:layout_marginLeft="161dp"
-        android:layout_marginTop="142dp"
         android:layout_marginEnd="162dp"
         android:layout_marginRight="162dp"
         android:layout_marginBottom="220dp"
         android:text="Selecione o horario"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lembreteButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/databtn"
@@ -101,5 +51,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/databtn" />
+
+    <ListView
+        android:id="@+id/listaTarefa"
+        style="@style/Widget.AppCompat.Light.ListView.DropDown"
+        android:layout_width="wrap_content"
+        android:layout_height="216dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="68dp"
+        android:background="#8C3535"
+        android:divider="@android:color/white"
+        android:dividerHeight="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/horariobtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

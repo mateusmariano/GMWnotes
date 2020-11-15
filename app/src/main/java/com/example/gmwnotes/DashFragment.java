@@ -1,44 +1,33 @@
 package com.example.gmwnotes;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.gmwnotes.Database.DatabaseClass;
-import com.example.gmwnotes.Database.EntityClass;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class DashFragment extends Fragment implements View.OnClickListener {
 
     Button btnHorario, btnData, btnSave;
-    String quandoNotificar;
-    DatabaseClass databaseClass;
     Calendar calendarToSave;
+    DatabaseHelper databaseHelper;
+    private ListView listaView;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,11 +38,13 @@ public class DashFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Button button2 = view.findViewById(R.id.notButton);
+        listaView = (ListView) view.findViewById(R.id.listaTarefa);
+        databaseHelper = new DatabaseHelper(this.getContext());
+        Button button2 = view.findViewById(R.id.savebtn);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showNotification();
+                salvar();
             }
         });
         btnData = view.findViewById(R.id.databtn);
@@ -62,8 +53,8 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         btnData.setOnClickListener(this);
         btnHorario.setOnClickListener(this);
         btnSave.setOnClickListener(this);
-        databaseClass = DatabaseClass.getDatabase(this.getContext());
         calendarToSave = Calendar.getInstance();
+        listar();
     }
 
     @Override
@@ -76,34 +67,19 @@ public class DashFragment extends Fragment implements View.OnClickListener {
             salvar();
         }
     }
-    public void showNotification(){
-        String welcome = "Notificação enviada" ;
-        Toast.makeText(getContext(), welcome, Toast.LENGTH_LONG).show();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), "testNot");
-        builder.setContentTitle("Sua aula vai começar!");
-        builder.setContentText("Não se atrase, sua aula vai começar daqui a pouco");
-        builder.setSmallIcon(R.drawable.ic_baseline_notifications_24);
-        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        builder.setAutoCancel(true);
-
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getContext());
-        managerCompat.notify(1,builder.build());
-    }
-
     private void salvar(){
-        EntityClass entityClass = new EntityClass();
         String name = "aula";
         String data = (btnData.getText().toString().trim());
         String hora = (btnHorario.getText().toString().trim());
-        entityClass.setEventdate(data);
-        entityClass.setEventname(name);
-        entityClass.setEventtime(hora);
+        String tarefa = name + " / " + data + " / " + hora;
+        boolean insertData = databaseHelper.addData(tarefa);
+        if(insertData){
+            toast("Tarefa adicionada com sucesso");
+        }else{
+            toast("Erro: Não foi possível adicionar tarefa");
+        }
+        listar();
 
-        databaseClass.EventDao().insertAll(entityClass);
-
-       // setAlarm(name, data, hora);
-        setAlarm(calendarToSave,name,data,hora);
-        //finish();
     }
     private void selectHorario(){
         Calendar calendar = Calendar.getInstance();
@@ -112,7 +88,6 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         TimePickerDialog timePickerDialog = new TimePickerDialog(this.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                quandoNotificar = i+":"+i1;
                 btnHorario.setText(formatTime(i,i1));
                 calendarToSave.set(Calendar.HOUR_OF_DAY,i);
                 calendarToSave.set(Calendar.MINUTE,i1);
@@ -136,6 +111,17 @@ public class DashFragment extends Fragment implements View.OnClickListener {
             }
         },ano, mes, dia);
         datePickerDialog.show();
+    }
+
+    private void listar(){
+        Cursor data = databaseHelper.getData();
+        ArrayList<String> listData = new ArrayList<>();
+        while (data.moveToNext()){
+            listData.add(data.getString(1));
+        }
+
+        ListAdapter adapter = new ArrayAdapter<>(this.getContext(),android.R.layout.simple_list_item_1, listData);
+        listaView.setAdapter(adapter);
     }
 
     public String formatTime(int hour, int minute) {
@@ -166,45 +152,7 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         return time;
     }
 
-    private void setAlarma(String text, String date, String time){
-        AlarmManager am = (AlarmManager)this.getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this.getContext(), AlarmBroadcast.class);
-        intent.putExtra("event", text);
-        intent.putExtra("horario", date);
-        intent.putExtra("data", time);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getContext(), 0,intent,PendingIntent.FLAG_ONE_SHOT);
-        String dataEHora = date+ " " + quandoNotificar;
-        DateFormat formatter = new SimpleDateFormat("d-M-yyyy hh:mm");
-        try{
-            Date date1 = formatter.parse(dataEHora);
-            am.set(AlarmManager.RTC_WAKEUP, date1.getTime(),pendingIntent);
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+    private void toast(String message){
+        Toast.makeText(this.getContext(),message, Toast.LENGTH_SHORT).show();
     }
-
-    private void setAlarm(Calendar calendar, String text, String date, String time){
-        Intent myIntent = new Intent(this.getContext() , AlarmBroadcast.class);
-        myIntent.putExtra("event", text);
-        myIntent.putExtra("time", date);
-        myIntent.putExtra("date", time);
-        AlarmManager am = (AlarmManager)this.getContext().getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(this.getContext(), 0, myIntent, 0);
-
-        Calendar calendarTorRemember = Calendar.getInstance();
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
-        calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR));
-        calendar.set(Calendar.AM_PM, Calendar.AM);
-        calendar.add(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
-
-        am.setRepeating(AlarmManager.RTC_WAKEUP, calendarTorRemember.getTimeInMillis(), 1000*60*60*24 , pendingIntent);
-
-    }
-
-
 }
