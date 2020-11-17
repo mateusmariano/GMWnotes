@@ -2,11 +2,14 @@ package com.example.gmwnotes;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -122,6 +125,24 @@ public class DashFragment extends Fragment implements View.OnClickListener {
 
         ListAdapter adapter = new ArrayAdapter<>(this.getContext(),android.R.layout.simple_list_item_1, listData);
         listaView.setAdapter(adapter);
+
+        listaView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l){
+                String nome = adapterView.getItemAtPosition(i).toString();
+                Cursor data = databaseHelper.getItemID(nome);
+                int itemID = 1;
+                while (data.moveToNext()){
+                    itemID = data.getInt(0);
+                }
+                if(itemID > -1){
+                    Intent editarTarefa = new Intent(DashFragment.this.getContext(), EditarTarefa.class);
+                    editarTarefa.putExtra("id", itemID);
+                    editarTarefa.putExtra("nome", nome);
+                    startActivity(editarTarefa);
+                }
+            }
+        });
     }
 
     public String formatTime(int hour, int minute) {

@@ -9,11 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name = ".NotificacaoService"
-            android:enabled = "true"
-            android:exported = "true" >
-        </service>
+
         <activity android:name=".Cadastro"></activity>
         <activity
             android:name=".CalcMedia"
@@ -22,6 +18,10 @@
             android:name=".DashboardUser"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".EditarTarefa"
+            android:screenOrientation="portrait"
+            />
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/app_name"
@@ -33,14 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".BootUpReciever" android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <category android:name="android.intent.category.DEFAULT" />
-
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".AlarmBroadcast"></receiver>
     </application>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"></uses-permission>
 </manifest>
