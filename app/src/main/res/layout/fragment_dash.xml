@@ -121,8 +121,8 @@
 
     <Button
         android:id="@+id/refreshList"
-        android:layout_width="45dp"
-        android:layout_height="39dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="292dp"
         android:background="@drawable/ic_baseline_refresh_24"
         app:layout_constraintEnd_toEndOf="parent"

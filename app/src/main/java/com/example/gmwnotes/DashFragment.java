@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,8 +88,10 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         String data = (btnData.getText().toString().trim());
         String hora = (btnHorario.getText().toString().trim());
         String tarefa = name + " / " + data + " / " + hora;
-        boolean insertData = databaseHelper.addData(tarefa);
-        if(data != "Selecione a data" || hora != "Selecione o horario" || !TextUtils.isEmpty(tarefaNome.getText().toString())){
+        Log.d("TAG", data);
+        Log.d("TAG", hora);
+        if(!data.equals("Selecione a data") && !hora.equals("Selecione o horario") && !TextUtils.isEmpty(tarefaNome.getText().toString())){
+            boolean insertData = databaseHelper.addData(tarefa);
             if(insertData){
                 toast("Tarefa adicionada com sucesso");
             }else{
@@ -133,6 +136,7 @@ public class DashFragment extends Fragment implements View.OnClickListener {
     }
 
     public void listar(){
+        toast("Lista atualizada");
         Cursor data = databaseHelper.getData();
         ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()){
