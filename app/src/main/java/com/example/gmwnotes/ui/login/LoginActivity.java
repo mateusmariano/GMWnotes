@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private Button button;
-
+    private String userName;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
-
+        userName = usernameEditText.toString();
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
             public void onChanged(@Nullable LoginFormState loginFormState) {
@@ -135,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void openDashboard(){
-        String welcome = "Bem vindo malandro!" ;
+        String welcome = "Bem vindo aluno!";
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, DashboardUser.class);
         startActivity(intent);

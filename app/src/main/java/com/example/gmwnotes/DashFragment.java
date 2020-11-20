@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TimePicker;
@@ -31,6 +33,8 @@ public class DashFragment extends Fragment implements View.OnClickListener {
     Calendar calendarToSave;
     DatabaseHelper databaseHelper;
     private ListView listaView;
+    private EditText tarefaNome;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -43,11 +47,18 @@ public class DashFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         listaView = (ListView) view.findViewById(R.id.listaTarefa);
         databaseHelper = new DatabaseHelper(this.getContext());
-        Button button2 = view.findViewById(R.id.savebtn);
-        button2.setOnClickListener(new View.OnClickListener() {
+        Button salvar = view.findViewById(R.id.savebtn);
+        salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 salvar();
+            }
+        });
+        Button atualizar = view.findViewById(R.id.refreshList);
+        atualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listar();
             }
         });
         btnData = view.findViewById(R.id.databtn);
@@ -57,6 +68,7 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         btnHorario.setOnClickListener(this);
         btnSave.setOnClickListener(this);
         calendarToSave = Calendar.getInstance();
+        tarefaNome =  (EditText) view.findViewById(R.id.nomeaula);
         listar();
     }
 
@@ -71,17 +83,21 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         }
     }
     private void salvar(){
-        String name = "aula";
+        String name = tarefaNome.getText().toString();
         String data = (btnData.getText().toString().trim());
         String hora = (btnHorario.getText().toString().trim());
         String tarefa = name + " / " + data + " / " + hora;
         boolean insertData = databaseHelper.addData(tarefa);
-        if(insertData){
-            toast("Tarefa adicionada com sucesso");
+        if(data != "Selecione a data" || hora != "Selecione o horario" || !TextUtils.isEmpty(tarefaNome.getText().toString())){
+            if(insertData){
+                toast("Tarefa adicionada com sucesso");
+            }else{
+                toast("Erro: Não foi possível adicionar tarefa");
+            }
+            listar();
         }else{
-            toast("Erro: Não foi possível adicionar tarefa");
+            toast("Por favor adicione valores válidos");
         }
-        listar();
 
     }
     private void selectHorario(){
@@ -116,7 +132,7 @@ public class DashFragment extends Fragment implements View.OnClickListener {
         datePickerDialog.show();
     }
 
-    private void listar(){
+    public void listar(){
         Cursor data = databaseHelper.getData();
         ArrayList<String> listData = new ArrayList<>();
         while (data.moveToNext()){
